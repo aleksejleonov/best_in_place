@@ -307,7 +307,7 @@ describe BestInPlace::BestInPlaceHelpers do
 
       it "should have the default data-collection" do
         data = ["No", "Yes"]
-        @span.attribute("data-collection").value.should == data.to_json
+        @span.attribute("data-collection").value.should == MultiJson.dump(data)
       end
 
       it "should render the current option as No" do
@@ -325,7 +325,7 @@ describe BestInPlace::BestInPlaceHelpers do
         end
 
         it "should render the proper data-collection" do
-          @span.attribute("data-collection").value.should == ["Nain", "Da"].to_json
+          @span.attribute("data-collection").value.should == '["Nain", "Da"]'
         end
       end
 
@@ -343,7 +343,7 @@ describe BestInPlace::BestInPlaceHelpers do
       end
 
       it "should have a proper data collection" do
-        @span.attribute("data-collection").value.should == @countries.to_json
+        @span.attribute("data-collection").value.should == MultiJson.dump(@countries)
       end
 
       it "should show the current country" do
@@ -362,7 +362,7 @@ describe BestInPlace::BestInPlaceHelpers do
         end
 
         it "should have a proper data collection" do
-          @span.attribute("data-collection").value.should == @apostrophe_countries.to_json
+          @span.attribute("data-collection").value.should == MultiJson.dump(@apostrophe_countries)
         end
       end
     end

@@ -22,7 +22,7 @@ module BestInPlace
       if opts[:type] == :select && !opts[:collection].blank?
         value = real_object.send(field)
         display_value = Hash[opts[:collection]].stringify_keys[value.to_s]
-        collection = opts[:collection].to_json
+        collection = MultiJson.dump(opts[:collection])
       end
       
       if opts[:type] == :select2
@@ -30,7 +30,7 @@ module BestInPlace
         display_value = value
         
         if !opts[:collection].blank?
-          collection = opts[:collection].to_json
+          collection = MultiJson.dump(opts[:collection])
         elsif !opts[:select2_options].blank?
           select2_options = opts[:select2_options].to_s
         end
@@ -42,7 +42,7 @@ module BestInPlace
           opts[:collection] = ["No", "Yes"]
         end
         display_value = value ? opts[:collection][1] : opts[:collection][0]
-        collection = opts[:collection].to_json
+        collection = MultiJson.dump(opts[:collection])
       end
       classes = ["best_in_place"]
       unless opts[:classes].nil?
@@ -66,7 +66,7 @@ module BestInPlace
       out << " data-use-confirm='#{opts[:use_confirm]}'" unless opts[:use_confirm].nil?
       out << " data-type='#{opts[:type]}'"
       out << " data-inner-class='#{opts[:inner_class]}'" if opts[:inner_class]
-      out << " data-html-attrs='#{opts[:html_attrs].to_json}'" unless opts[:html_attrs].blank?
+      out << " data-html-attrs='#{MultiJson.dump(opts[:html_attrs])}'" unless opts[:html_attrs].blank?
       out << " data-original-content='#{attribute_escape(real_object.send(field))}'" if opts[:display_as] || opts[:display_with]
       out << " data-value='#{attribute_escape(value)}'" if value
       out << " data-select2-options='#{select2_options}'" unless select2_options.blank?
@@ -74,7 +74,7 @@ module BestInPlace
       if opts[:data] && opts[:data].is_a?(Hash)
         opts[:data].each do |k, v|
           if !v.is_a?(String) && !v.is_a?(Symbol)
-            v = v.to_json
+            v = MultiJson.dump(v)
           end
           out << %( data-#{k.to_s.dasherize}="#{v}")
         end
